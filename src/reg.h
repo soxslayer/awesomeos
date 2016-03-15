@@ -1,0 +1,135 @@
+#pragma once
+
+#include "types.h"
+
+#define DEREF_REG(a,o) (*((volatile uint32_t *)((a) + (o))))
+
+#define REG32(a,o) (*((volatile uint32_t *)((uint32_t)(a) + (o))))
+#define REG32_RO(a, o) (*((volatile const uint32_t *)((uint32_t)(a) + (o))))
+
+/* UARTs */
+#define UART_RHR(b) REG32_RO(b, 0x0)
+#define UART_THR(b) REG32(b, 0x0)
+#define UART_DLL(b) REG32(b, 0x0)
+#define UART_IER(b) REG32(b, 0x4)
+# define UART_IER_RHRIT 0
+# define UART_IER_THRIT 1
+#define UART_DLH(b) REG32(b, 0x4)
+#define UART_IIR(b) REG32_RO(b, 0x8)
+# define UART_IIR_IT_PENDING 0
+# define UART_IIR_IT_TYPE 1
+#  define UART_IIR_MODEM 0x00
+#  define UART_IIR_THR 0x01
+#  define UART_IIR_RHR 0x02
+#  define UART_IIR_RECV_LINE_STATUS 0x03
+#  define UART_IIR_RX_TIMEOUT 0x06
+#  define UART_IIR_XOFF 0x08
+#  define UART_IIR_CONTROL_SIGNAL 0x10
+#  define UART_IIR_IT_TYPE_MASK 0x3e
+#define UART_FCR(b) REG32(b, 0x8)
+# define UART_FCR_FIFO_EN 0
+# define UART_FCR_RX_FIFO_TRIG 6
+# define UART_FCR_TX_FIFO_TRIG 4
+#define UART_EFR(b) REG32(b, 0x8)
+# define UART_EFR_ENHANCEDEN 4
+#define UART_LCR(b) REG32(b, 0xc)
+# define UART_LCR_DIV_EN 7
+# define UART_LCR_BREAK_EN 6
+#define UART_MCR(b) REG32(b, 0x10)
+# define UART_MCR_TCRTLR 6
+#define UART_LSR(b) REG32_RO(b, 0x14)
+# define UART_LSR_TXFIFOE 5
+#define UART_TCR(b) REG32(b, 0x18)
+#define UART_TLR(b) REG32(b, 0x1c)
+#define UART_TXFIFO_LVL(b) REG32_RO(b, 0x68)
+
+/* INTC */
+#define INTC_SIR_IRQ REG32(INTC_BASE, 0x40)
+#define INTC_SIR_FIQ REG32(INTC_BASE, 0x44)
+#define INTC_MIR0 REG32(INTC_BASE, 0x84)
+#define INTC_MIR_CLEAR0 REG32(INTC_BASE, 0x88)
+#define INTC_MIR_SET0 REG32(INTC_BASE, 0x8c)
+#define INTC_ISR_SET0 REG32(INTC_BASE, 0x90)
+#define INTC_ISR_CLEAR0 REG32(INTC_BASE, 0x94)
+#define INTC_MIR1 REG32(INTC_BASE, 0xa4)
+#define INTC_MIR_CLEAR1 REG32(INTC_BASE, 0xa8)
+#define INTC_MIR_SET1 REG32(INTC_BASE, 0xac)
+#define INTC_ISR_SET1 REG32(INTC_BASE, 0x90)
+#define INTC_ISR_CLEAR1 REG32(INTC_BASE, 0x94)
+#define INTC_MIR2 REG32(INTC_BASE, 0xc4)
+#define INTC_MIR_CLEAR2 REG32(INTC_BASE, 0xc8)
+#define INTC_MIR_SET2 REG32(INTC_BASE, 0xcc)
+#define INTC_ISR_SET2 REG32(INTC_BASE, 0xd0)
+#define INTC_ISR_CLEAR2 REG32(INTC_BASE, 0xd4)
+#define INTC_PENDING_IRQ2 REG32_RO(INTC_BASE, 0xd8)
+#define INTC_MIR3 REG32(INTC_BASE, 0xe4)
+#define INTC_MIR_CLEAR3 REG32(INTC_BASE, 0xe8)
+#define INTC_MIR_SET3 REG32(INTC_BASE, 0xec)
+#define INTC_ILR(i) REG32(INTC_BASE, 0x100 + 4 * (i))
+# define INTC_EMUINT 0
+# define INTC_UART0INT 72
+# define INTC_NUM_INT 128
+/* Converts interrupt number to MIR bit */
+#define INTC_INT32_BIT(i) ((i) % 32)
+
+/* UART0 */
+#define UART0_BASE 0x44e09000
+#define INTC_BASE 0x48200000
+
+/* GPIO */
+#define GPIO_SYSCONFIG(b) REG32(b, 0x10)
+# define AUTOIDLE 0
+# define SOFTRESET 1
+# define ENAWAKEUP 2
+# define IDLEMODE0 3
+# define IDLEMODE1 4
+#define GPIO_IRQSTATUS_RAW_0(b) REG32(b, 0x24)
+#define GPIO_IRQSTATUS_0(b) REG32(b, 0x2c)
+#define GPIO_IRQSTATUS_SET_0(b) REG32(b, 0x34)
+#define GPIO_IRQSTATUS_CLR_0(b) REG32(b, 0x3c)
+#define GPIO_IRQWAKEN_0(b) REG32(b, 0x44)
+#define GPIO_SYSSTATUS(b) REG32_RO(b, 0x114)
+# define RESETDONE 0
+#define GPIO_OE(b) REG32(b, 0x134)
+#define GPIO_RISINGDETECT(b) REG32(b, 0x148)
+#define GPIO_CLEARDATAOUT(b) REG32(b, 0x190)
+#define GPIO_SETDATAOUT(b) REG32(b, 0x194)
+
+/* GPIO1 */
+#define GPIO1_BASE 0x4804c000
+#define GPIO1_OE GPIO_OE(GPIO1_BASE)
+#define GPIO1_CLEARDATAOUT GPIO_CLEARDATAOUT(GPIO1_BASE)
+#define GPIO1_SETDATAOUT GPIO_SETDATAOUT(GPIO1_BASE)
+
+/* CM_PER */
+#define CM_PER_BASE 0x44e00000
+
+#define CM_PER_L4LS_CLKCTRL REG32(CM_PER_BASE, 0x60)
+# define CM_PER_L4LS_IDLEST0 16
+# define CM_PER_L4LS_IDLEST1 17
+# define CM_PER_L4LS_MODULEMODE1 1
+# define CM_PER_L4LS_MODULEMODE0 0
+#define CM_PER_GPIO1_CLKCTRL REG32(CM_PER_BASE, 0xac)
+# define GPIO1_GDBCLK 18
+# define MODULEMODE1 1
+# define MODULEMODE0 0
+
+/* Control Module */
+#define CM_BASE 0x44310000
+
+#define CONF_GPMC_AD6 REG32(CM_BASE, 0x818)
+
+/* Watchdog Timer */
+#define WDT_BASE 0x44e35000
+
+#define WDT_WWPS REG32(WDT_BASE, 0x34)
+# define W_PEND_WSPR 4
+#define WDT_WSPR REG32(WDT_BASE, 0x48)
+# define WDT_WSPR_START1 0x0000bbbb
+# define WDT_WSPR_START2 0x00004444
+# define WDT_WSPR_STOP1 0x0000aaaa
+# define WDT_WSPR_STOP2 0x00005555
+#define WDT_WIRQENSET REG32(WDT_BASE, 0x5c)
+#define WDT_WIRQENCLR REG32(WDT_BASE, 0x60)
+# define WDT_ENABLE_OVF 0
+# define WDT_ENABLE_DLY 1
