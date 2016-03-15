@@ -1,6 +1,6 @@
 # AwesomeOS
 
-AwesomeOS is a real-time operating system written for the BeagleBone hardware. It is still in really, really early development.
+AwesomeOS is a real-time operating system written for the BeagleBone hardware. It is still in really, really early development. There is a acompanying [blog](http://tmoae.blogspot.com/) which containing some information I have learned in the process of developing AwesomeOS.
 
 Features currently working:
 
